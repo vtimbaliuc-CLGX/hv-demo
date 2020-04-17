@@ -2,7 +2,7 @@ package com.demo.api.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Builder
 @AllArgsConstructor
@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class Agent extends EntityWithUUID {
     private String firstName;
     private String lastName;

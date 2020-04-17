@@ -21,6 +21,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	jcenter()
 }
 
 /*
@@ -44,6 +45,9 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+	testCompile "org.mockito:mockito-core:3.+"
+	implementation group: 'org.jeasy', name: 'easy-random-core', version: '4.0.0'
+	implementation group: 'org.reflections', name: 'reflections', version: '0.9.12'
 }
 
 test {

@@ -2,15 +2,11 @@ package com.demo.api.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
 @EqualsAndHashCode(callSuper=false)
 public class Listing extends EntityWithUUID {
@@ -20,7 +16,8 @@ public class Listing extends EntityWithUUID {
     private String city;
     private String country;
 
-    @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "listing_agent_id_fkey"))
+
+//    @JoinColumn(foreignKey = @ForeignKey(name = "listing_agent_id_fkey"))
+    @ManyToOne(fetch = FetchType.LAZY)
     private Agent agent;
 }

@@ -1,53 +1,68 @@
 package com.demo.api.services;
 
-import com.demo.api.entity.Agent;
-import com.demo.api.entity.Listing;
-import com.demo.api.repository.AgentRepository;
-import com.demo.api.repository.ListingRepository;
+import com.demo.api.entity.EntityWithUUID;
+import lombok.SneakyThrows;
+import org.jeasy.random.EasyRandom;
+import org.reflections.Reflections;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public class DataFillerService {
-    private final AgentRepository agentRepository;
-    private final ListingRepository listingRepository;
+    @Autowired
+    private Map<String, CrudRepository> repositories;
 
-    public DataFillerService(AgentRepository agentRepository, ListingRepository listingRepository) {
-        this.agentRepository = agentRepository;
-        this.listingRepository = listingRepository;
-    }
-
+    @SneakyThrows
     @PostConstruct
     @Transactional
     public void fillData() {
-        Agent slava = new Agent("Slava", "Timbaliuc");
-        Agent rahul = new Agent("Rahul", "Shardha");
+        Reflections reflections = new Reflections("com.demo.api");
+        Set<Class<? extends EntityWithUUID>> entityClasses = reflections.getSubTypesOf(EntityWithUUID.class);
+        EasyRandom easyRandom = new EasyRandom();
 
-        agentRepository.save(slava);
-        agentRepository.save(rahul);
+        ArrayList<String> entityNames = new ArrayList<>();
 
-        Listing office = new Listing().builder()
-                .streetNumber("30")
-                .streetName("Adelaide")
-                .city("Toronto")
-                .country("Canada")
-                .postalCode("M5C3G6")
-                .agent(rahul)
-                .build();
+        for(Class<? extends EntityWithUUID> obj : entityClasses) {
+            entityNames.add(obj.getSimpleName().toLowerCase());
+        }
 
-        Listing simpsons = new Listing().builder()
-                .streetNumber("742")
-                .streetName("Evergreen Terrace")
-                .city("Springfield")
-                .country("United States")
-                .postalCode("90210")
-                .agent(slava)
-                .build();
+        for(Class<? extends EntityWithUUID> obj : entityClasses) {
+            String repoName = obj.getSimpleName().toLowerCase().concat("Repository");
+            if (repositories.containsKey(repoName)) {
+                for (int i = 0; i < 10; i++) {
+                    ArrayList<String> entityFields = getEntityField(obj.getDeclaredFields(), entityNames);
 
-        listingRepository.save(office);
-        listingRepository.save(simpsons);
+                    EntityWithUUID tempObj = easyRandom.nextObject(obj);
+
+                    if(entityFields.size() > 0){
+                        for(String fld : entityFields){
+                            Field entityField = tempObj.getClass().getDeclaredField(fld);
+                            entityField.setAccessible(true);
+                            repositories.get(fld + "Repository").save(entityField.get(tempObj));
+                        }
+                    }
+
+                    repositories.get(repoName).save(tempObj);
+                }
+            }
+        }
     }
 
+    private ArrayList<String> getEntityField(Field[] declaredFields, ArrayList<String> entityNames) {
+        ArrayList<String> entityFields = new ArrayList<>();
+        for(Field fld: declaredFields){
+            if(entityNames.contains(fld.getName())){
+                entityFields.add(fld.getName());
+            }
+        }
+        return entityFields;
+    }
 }
