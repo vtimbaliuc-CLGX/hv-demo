@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @MappedSuperclass
 
-public class EntityWithUUID {
+public class EntityWithUUID extends BaseEntity{
     @Id @Type(type = "pg-uuid")
     private UUID id;
 
