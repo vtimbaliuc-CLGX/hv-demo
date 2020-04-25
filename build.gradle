@@ -47,8 +47,14 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	testCompile "org.mockito:mockito-core:3.+"
-	implementation group: 'org.jeasy', name: 'easy-random-core', version: '4.0.0'
-	implementation group: 'org.reflections', name: 'reflections', version: '0.9.12'
+	implementation group: 'org.jeasy', name: 'easy-random-core', version: '+'
+	implementation group: 'org.reflections', name: 'reflections', version: '+'
+//	implementation group: 'org.seleniumhq.selenium', name: 'selenium-htmlunit-driver', version: '+'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '+'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-api', version: '3.14.0'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-remote-driver', version: '+'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-support', version: '+'
+	implementation 'net.sourceforge.htmlunit:htmlunit:2.39.1'
 }
 
 test {

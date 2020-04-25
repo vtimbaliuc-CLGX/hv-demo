@@ -2,10 +2,13 @@ package com.demo.api.controller;
 
 import com.demo.api.entity.Agent;
 import com.demo.api.services.AgentService;
+import com.demo.api.tools.ClaritySession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/test")
@@ -27,7 +30,8 @@ public class AgentController {
     }
      */
     @RequestMapping("/test")
-    public ResponseEntity<Agent> testFunction(){
+    public ResponseEntity<Agent> testFunction() throws IOException {
+        ClaritySession.generate();
         return agentService.testFunction();
     }
 }
