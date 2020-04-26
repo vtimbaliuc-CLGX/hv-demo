@@ -31,7 +31,6 @@ public class AgentController {
      */
     @RequestMapping("/test")
     public ResponseEntity<Agent> testFunction() throws IOException {
-        ClaritySession.generate();
         return agentService.testFunction();
     }
 }

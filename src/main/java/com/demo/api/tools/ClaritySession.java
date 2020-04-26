@@ -3,11 +3,16 @@ package com.demo.api.tools;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.gargoylesoftware.htmlunit.util.Cookie;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Set;
 
+@Component
 public class ClaritySession {
+    public static String currToken;
+
     public static String generate() throws IOException {
         String serverUrl = "http://localhost:8080";
         WebClient client = new WebClient();
@@ -45,4 +50,10 @@ public class ClaritySession {
 
         throw new IOException();
     }
+
+    @Scheduled(cron="* * */1 * * *")
+    private void updateToken() throws IOException {
+        ClaritySession.currToken = ClaritySession.generate();
+    }
+
 }
