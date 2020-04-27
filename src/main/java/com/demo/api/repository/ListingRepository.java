@@ -1,9 +1,8 @@
 package com.demo.api.repository;
 
 import com.demo.api.entity.Listing;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
-
-public interface ListingRepository extends CrudRepository<Listing, UUID> {
+@Repository
+public interface ListingRepository extends BaseRepository<Listing> {
 }

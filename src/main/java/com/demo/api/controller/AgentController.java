@@ -2,15 +2,16 @@ package com.demo.api.controller;
 
 import com.demo.api.entity.Agent;
 import com.demo.api.services.AgentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/test")
 public class AgentController {
+    @Autowired
+    AgentService agentService;
     /*
     /* Temporarily Empty to test something
 
@@ -25,4 +26,8 @@ public class AgentController {
         return ResponseEntity.ok();
     }
      */
+    @RequestMapping("/test")
+    public ResponseEntity<Agent> testFunction(){
+        return agentService.testFunction();
+    }
 }

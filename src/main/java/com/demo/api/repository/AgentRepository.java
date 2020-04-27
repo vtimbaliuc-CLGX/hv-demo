@@ -1,9 +1,9 @@
 package com.demo.api.repository;
 
 import com.demo.api.entity.Agent;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
-
-public interface AgentRepository extends CrudRepository<Agent, UUID> {
+@Repository
+public interface AgentRepository extends BaseRepository<Agent> {
+    Agent getAgentDetails();
 }
